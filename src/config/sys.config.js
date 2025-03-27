@@ -9,10 +9,14 @@ export default {
   USER: process.env.USER || 'root',
   PASSWORD: process.env.PASSWORD || '',
   DB: process.env.DB || '',
-  NODEMAILER_MAIL: process.env.NODEMAILER_MAIL || '',
-  NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD || '',
+
   AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME || '',
   AWS_REGION: process.env.AWS_REGION || '',
   AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY || '',
-  AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || ''
+  AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || '',
+
+  NODEMAILER_PORT: process.env.NODEMAILER_PORT || 465,
+  NODEMAILER_HOST: process.env.NOEMAILER_HOST || '',
+  NODEMAILER_MAIL: process.env.NODEMAILER_MAIL || '',
+  NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD || '',
 }

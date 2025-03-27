@@ -7,8 +7,8 @@ const router = express.Router();
 const EMAIL_TOKEN = dbConfig.EMAIL_TOKEN ?? process.env.EMAIL_TOKEN; // Replace with your actual static GUID
 
 const transporter = nodemailer.createTransport({
-    host: "smtp.titan.email",
-    port: 465,
+    host: dbConfig.NODEMAILER_HOST,
+    port: dbConfig.NODEMAILER_PORT,
     secure: true, // Use `true` for port 465, `false` for all other ports
     auth: {
         user: dbConfig.NODEMAILER_MAIL,  // ✅ Ensure correct email
