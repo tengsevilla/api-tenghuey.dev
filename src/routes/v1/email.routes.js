@@ -1,25 +1,25 @@
 import express from "express";
 import nodemailer from "nodemailer";
-import dbConfig from "../../config/sys.config.js";
 
 const router = express.Router();
 
-const EMAIL_TOKEN = dbConfig.EMAIL_TOKEN ?? process.env.EMAIL_TOKEN; // Replace with your actual static GUID
+const EMAIL_TOKEN = process.env.EMAIL_TOKEN;
 
 const transporter = nodemailer.createTransport({
-    host: dbConfig.NODEMAILER_HOST,
-    port: dbConfig.NODEMAILER_PORT,
-    secure: true, // Use `true` for port 465, `false` for all other ports
+    host: process.env.NODEMAILER_HOST,
+    port: process.env.NODEMAILER_PORT,
+    secure: true,
     auth: {
-        user: dbConfig.NODEMAILER_MAIL,  // ✅ Ensure correct email
-        pass: dbConfig.NODEMAILER_PASSWORD,  // ✅ Ensure correct password
+        user: process.env.NODEMAILER_MAIL,
+        pass: process.env.NODEMAILER_PASSWORD,
     },
 });
 
 // ✅ Send Mail Route
 router.post("/send", async (req, res) => {
     try {
-        const { authToken, name, email, message, subject, sendTo } = req.body;
+        const authToken = req.headers.authorization?.split(" ")[1]; // Extract token from Bearer scheme
+        const { name, email, message, subject, sendTo } = req.body;
 
         if (!authToken || authToken !== EMAIL_TOKEN) {
             return res.status(401).json({ status: 401, mailsent: false, apimessage: "Unauthorized: Invalid auth token" });
@@ -31,11 +31,24 @@ router.post("/send", async (req, res) => {
             subject: subject || "New Contact Request",
             text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
             html: `
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message}</p>
+            <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: auto;">
+              <h2 style="color: #2c3e50;">📩 New Message Received</h2>
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                  <td style="padding: 8px 0;"><strong>Name:</strong></td>
+                  <td style="padding: 8px 0;">${name}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0;"><strong>Email:</strong></td>
+                  <td style="padding: 8px 0;">${email}</td>
+                </tr>
+              </table>
+              <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;" />
+              <p style="margin-bottom: 10px;"><strong>Message:</strong></p>
+              <p style="background: #f9f9f9; padding: 15px; border-radius: 6px; white-space: pre-line;">${message}</p>
+            </div>
           `,
+
         };
 
         const info = await transporter.sendMail(mailOptions);
