@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export default {
-  EMAIL_TOKEN: process.env.EMAIL_TOKEN || '',
+
   ACCESS_TOKEN: process.env.ACCESS_TOKEN || '',
   PORT: process.env.PORT || 3030,
   HOST: process.env.HOST || 'localhost',
@@ -15,6 +15,7 @@ export default {
   AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY || '',
   AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || '',
 
+  EMAIL_TOKEN: process.env.EMAIL_TOKEN || '',
   NODEMAILER_PORT: process.env.NODEMAILER_PORT || 465,
   NODEMAILER_HOST: process.env.NOEMAILER_HOST || '',
   NODEMAILER_MAIL: process.env.NODEMAILER_MAIL || '',
